@@ -12,10 +12,10 @@ body{font-family:var(--body);overflow:hidden}
  background:radial-gradient(ellipse at 50% 38%,#0c2340 0%,var(--bg) 60%);transition:opacity .25s}
 .lbl{font-family:var(--disp);letter-spacing:.3em;text-transform:uppercase;font-size:11px;color:var(--dim)}
 header{padding-block:18px 0;display:grid;grid-template-columns:1fr auto;align-items:end;gap:4px 12px;border-bottom:1px solid var(--line);padding-bottom:14px}
-header .lbl:first-child{grid-column:1/-1;margin-bottom:6px}
+header{align-items:center}
 h1{margin:0;font:700 clamp(36px,11vw,52px)/1 var(--disp);letter-spacing:.22em}
 .tag{grid-column:1;font-size:10px;letter-spacing:.32em}
-#status{grid-row:2/4;grid-column:2;display:flex;flex-direction:column;align-items:center;gap:8px;font-family:var(--disp);font-size:11px;letter-spacing:.15em;color:var(--ok)}
+#status{display:flex;flex-direction:column;align-items:center;gap:8px;font-family:var(--disp);font-size:11px;letter-spacing:.15em;color:var(--ok)}
 #status i{width:9px;height:9px;border-radius:50%;background:currentColor;box-shadow:0 0 10px currentColor}
 #stage{flex:1;min-height:0;position:relative;display:flex;align-items:flex-end;justify-content:center}
 canvas{position:absolute;inset:0;width:100%;height:100%}
@@ -28,13 +28,13 @@ canvas{position:absolute;inset:0;width:100%;height:100%}
 .st b{font:500 13px var(--disp);letter-spacing:.2em;color:var(--accent);white-space:nowrap;padding-top:1px}
 .st b::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:10px;vertical-align:middle;box-shadow:0 0 8px var(--accent)}
 .st span{min-width:0}
-.voice .card{display:none}
+.voice .card,.voice #sys,.card:empty,.card:has(#log:empty){display:none}
 #bar{margin-top:12px;display:flex;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:40px;padding:6px 6px 6px 20px}
 #inp{flex:1;min-width:0;background:none;border:0;color:var(--ink);font:15px var(--body);outline:none}
 #inp::placeholder{color:#6a809c}
 #send{width:46px;height:46px;border-radius:50%;border:0;background:var(--accent);color:#03101e;display:grid;place-items:center;cursor:pointer}
 .voice #bar{visibility:hidden}
-nav{margin-top:12px;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding-block:10px calc(10px + env(safe-area-inset-bottom,0px))}
+nav{margin-top:12px;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);padding-block:10px calc(10px + env(safe-area-inset-bottom,0px))}
 nav button{background:none;border:0;color:var(--dim);display:grid;justify-items:center;gap:6px;font:500 10px var(--disp);letter-spacing:.18em;cursor:pointer}
 nav button span{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center}
 nav button.on{color:var(--ink)}nav button.on span{background:#12304e;border-color:var(--accent)}
@@ -65,19 +65,16 @@ label.rng input{flex:1}
 
 <div id="app">
   <header>
-    <span class="lbl">Tech House / AI Interface</span>
-    <h1>STATIC</h1>
+    <h1 id="dirHot" style="user-select:none;-webkit-user-select:none;-webkit-touch-callout:none">STATIC</h1>
     <div id="status"><i></i><span id="stxt">ONLINE</span></div>
-    <span class="lbl tag">Intelligence without limits</span>
   </header>
-  <div id="stage" role="button" tabindex="0" aria-label="Play next scripted reply"><canvas id="c"></canvas><span class="lbl" id="sys">System active</span></div>
-  <div class="card" id="card"><span class="lbl" id="convNo">Conversation / 001</span><div id="log"></div></div>
+  <div id="stage"><canvas id="c"></canvas><span class="lbl" id="sys">System active</span></div>
+  <div class="card" id="card"><div id="log"></div></div>
   <form id="bar"><input id="inp" autocomplete="off" placeholder="Ask Static anything..."><button id="send" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></form>
   <nav>
     <button id="tVoice"><span><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>VOICE</button>
     <button id="tAudio"><span><svg viewBox="0 0 24 24" id="audIco"><path d="M7 7l10 10M17 7L7 17"/></svg></span><em id="audTxt" style="font-style:normal">AUDIO OFF</em></button>
     <button id="tNew"><span><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>NEW CHAT</button>
-    <button id="tDir"><span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/></svg></span>DIRECTOR</button>
   </nav>
 </div>
 
@@ -110,7 +107,7 @@ label.rng input{flex:1}
   </sec>
   <sec><span class="lbl">On set</span>
     <div class="help">Text scenes: whatever the actor types, the field shows the scripted question. Send makes Static answer.<br>
-    Voice scenes: tap the orb (or press Space / a Bluetooth clicker) after the actor finishes speaking.<br>
+    Voice scenes: press Space / a Bluetooth clicker after the actor finishes speaking. Hold the STATIC title for 1 second to open this screen.<br>
     <code>←</code> back a line · <code>→</code>/Space next · <code>D</code> director · <code>V</code> voice mode</div>
   </sec>
 </div>
@@ -160,27 +157,27 @@ function renderScenes(){$('scenes').innerHTML='';scenes.forEach((s,i)=>{const d=
   d.innerHTML='<span></span><small></small>';d.firstChild.textContent=s.name;d.lastChild.textContent=s.lines.length+' lines';
   d.onclick=()=>{si=i;store.set('static-scene',i);renderScenes();reset()};$('scenes').appendChild(d)})}
 const lines=()=>scenes[si]?.lines||[];
-function reset(){li=0;busy=false;$('log').innerHTML='';$('inp').value='';$('convNo').textContent='Conversation / '+String(conv).padStart(3,'0');showNext();voiceHint('Tap orb or press Space for reply')}
+function reset(){li=0;busy=false;$('log').innerHTML='';$('inp').value='';showNext()}
 function showNext(){const l=lines()[li];$('nextLine').textContent=l?`Next: ${l.who==='S'?'STATIC':'USER'} — ${l.text.slice(0,70)}`:'End of scene.'}
 function addYou(t){const d=document.createElement('div');d.className='you';d.innerHTML='<small>YOU</small><span></span>';d.lastChild.textContent=t;$('log').appendChild(d)}
 function addStatic(){const d=document.createElement('div');d.className='st';d.innerHTML='<b>STATIC</b><span></span>';$('log').appendChild(d);return d.lastChild}
 function scroll(){$('card').scrollTop=1e9}
 let utterance=null;
-function voiceHint(t){if(mode==='voice')$('sys').textContent=t}
+function voiceHint(){}
 function speak(t){
   if(!audio){voiceHint('Audio off · tap AUDIO ON');return}
   if(!window.speechSynthesis){voiceHint('Speech unavailable · use Safari or Chrome');return}
   window.speechSynthesis.cancel();
   utterance=new SpeechSynthesisUtterance(t);utterance.rate=.95;utterance.pitch=.85;
   utterance.onstart=()=>voiceHint('Speaking…');
-  utterance.onend=()=>voiceHint(li>=lines().length?'Scene complete · tap NEW CHAT to replay':'Tap orb for next reply');
+  utterance.onend=()=>{};
   utterance.onerror=e=>{if(!['canceled','interrupted'].includes(e.error))voiceHint('Audio blocked · try Safari or Chrome')};
   voiceHint('Starting voice…');window.speechSynthesis.resume();window.speechSynthesis.speak(utterance)
 }
 function typeOut(el,t){let i=0;busy=true;(function step(){if(state==='freeze'){setTimeout(step,60);return}
   el.textContent=t.slice(0,++i);scroll();if(i<t.length)setTimeout(step,20);else busy=false})()}
 
-function next(){if(busy||state==='off')return;const L=lines();if(li>=L.length){voiceHint('Scene complete · tap NEW CHAT to replay');return}
+function next(){if(busy||state==='off')return;const L=lines();if(li>=L.length)return;
   let l=L[li];
   if(l.who==='U'){$('log').innerHTML='';addYou(l.text);$('inp').value='';li++;l=L[li];scroll()}
   if(l&&l.who==='S'){li++;thinking=0;typeOut(addStatic(),l.text);speak(l.text)}
@@ -189,16 +186,16 @@ function back(){if(busy)return;li=Math.max(0,li-2);if(lines()[li]?.who==='S'&&li
 
 $('inp').addEventListener('input',e=>{const l=lines()[li];if(!l||l.who!=='U'||(e.inputType||'').startsWith('delete'))return;
   e.target.value=l.text.slice(0,Math.min(l.text.length,e.target.value.length))});
-$('bar').addEventListener('submit',e=>{e.preventDefault();next()});
+$('bar').addEventListener('submit',e=>{e.preventDefault();const l=lines()[li];if(mode==='text'&&l&&l.who==='U'&&$('inp').value.length<l.text.length)return;next()});
 
 function setMode(m){mode=m;$('app').classList.toggle('voice',m==='voice');$('tVoice').classList.toggle('on',m==='voice');
-  if(state==='normal'){$('stxt').textContent=m==='voice'?'LISTENING':'ONLINE';$('sys').textContent=m==='voice'?'Tap orb or press Space for reply':'System active'}}
-$('tVoice').onclick=()=>{setMode(mode==='voice'?'text':'voice');if(mode==='voice'){if(!audio)$('tAudio').click();$('stage').focus()}};
+  if(state==='normal'){$('stxt').textContent=m==='voice'?'LISTENING':'ONLINE';$('sys').textContent='System active'}}
+$('tVoice').onclick=()=>{setMode(mode==='voice'?'text':'voice');if(mode==='voice'&&!audio)$('tAudio').click()};
 $('tAudio').onclick=()=>{audio=!audio;$('audTxt').textContent=audio?'AUDIO ON':'AUDIO OFF';$('tAudio').classList.toggle('on',audio);
   $('audIco').innerHTML=audio?'<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 8a5 5 0 0 1 0 8"/>':'<path d="M7 7l10 10M17 7L7 17"/>';if(!audio)window.speechSynthesis?.cancel()};
 $('tNew').onclick=()=>{conv++;reset()};
 const openDir=()=>{$('dir').hidden=false;showNext()},closeDir=()=>$('dir').hidden=true;
-$('tDir').onclick=openDir;$('dClose').onclick=closeDir;
+let hold;$('dirHot').addEventListener('pointerdown',()=>hold=setTimeout(openDir,1000));['pointerup','pointerleave','pointercancel'].forEach(v=>$('dirHot').addEventListener(v,()=>clearTimeout(hold)));$('dClose').onclick=closeDir;
 $('dNext').onclick=next;$('dBack').onclick=back;$('dReset').onclick=reset;
 $('gi').oninput=e=>$('giv').textContent=e.target.value;$('gd').oninput=e=>$('gdv').textContent=e.target.value+'s';
 const later=f=>()=>{closeDir();setTimeout(f,2000)};
@@ -208,9 +205,8 @@ $('dSave').onclick=()=>{try{const s=parse($('script').value);if(!s.length)throw 
   msg(`Loaded ${s.length} scenes, ${s.reduce((a,b)=>a+b.lines.length,0)} lines.`)}catch(e){msg('Nothing loaded. Check that lines start with NAME: and scenes with #.',1)}};
 $('dSample').onclick=()=>{$('script').value=SAMPLE;msg('Sample pasted. Tap Save & Apply.')};
 $('file').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{$('script').value=r.result;$('dSave').click()};r.readAsText(f);e.target.value=''};
-$('stage').addEventListener('click',()=>{if(mode==='voice')next()});
 addEventListener('keydown',e=>{if(/TEXTAREA|INPUT/.test(e.target.tagName)||e.target.isContentEditable||e.repeat)return;const k=e.key.toLowerCase();
-  if(k===' '||k==='arrowright'||k==='pagedown'||(k==='enter'&&e.target===$('stage'))){e.preventDefault();next()}else if(k==='arrowleft'||k==='pageup')back();
+  if(k===' '||k==='arrowright'||k==='pagedown'){e.preventDefault();next()}else if(k==='arrowleft'||k==='pageup')back();
   else if(k==='g')glitch();else if(k==='x')shutdown();else if(k==='r')restore();else if(k==='v')$('tVoice').click();else if(k==='d')$('dir').hidden?openDir():closeDir()});
 
 /* ---- Visual system: independent of conversation state ---- */
